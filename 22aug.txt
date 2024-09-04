@@ -1,0 +1,111 @@
+Add to cart button:
+In Products component file, in product loop code where all the product code is written there make a button of add to cart 
+then in add to cart button give onclick function of addtocart() 
+then make addtocart function and give console.log('working')  
+to check on clicking add to cart button we get working in console 
+but on clicking add to cart button it is refreshing page which is due to css property of group relative so we remove it 
+Now on clicking add to cart button it shows working in console 
+
+Redux Toolkit:
+Now when we click add to cart button its data should be saved in cart 
+for this we will use redux toolkit to update add to cart value for all product pages ie beauty,furniture,etc 
+Go to redux toolkit website, copy install redux toolkit code and paste in terminal 
+In app, make redux-toolkit folder in that make store and slices folder 
+and in store folder, make store.js file 
+and in slices folder, make cartslice.js file
+
+store.js:
+in store.js file, get the code of store file from reduxtoolkit website of store code 
+and then in our main file ie layout.js file, get the code from reduxtoolkit website and paste the import files of store(with our store path) and provider and pass provider code in body 
+use 'use client' and remove export metadata code 
+
+cartslices.js:
+in cartslices.js file, get the code from reduxtoolkit website of slice code 
+with changes of in initialstate take cart key and give cart key blank array 
+give export const variable name as countercart 
+in that name key as cart 
+in reducer key, have addtocart,removecart and emptycart function 
+then export addtocart,removecart and emptycart and replace counterslice with countercart
+
+In store.js file, in reducer key give cart key in that pass countercart
+so automatically cartslices.js file will get imported but remove the brackets as we want all the file to be imported 
+
+useSelector and useDispatch:
+useSelector to get the value 
+useDispatch to call function 
+In Header component file, 
+get the import code of useSelector useDispatch 
+then get the useSelector code and give its name as getcartdata and pass state.cart.cart 
+as state name is given in useSelector
+and cart in store file we have given cart key in reducer  
+and cart in slice file we have cart key in initialstate 
+at login code, make three link of cart,login and signup 
+so at cart link, pass getcartdata.length to get the length of cartdata 
+so at browser we can see cart(0)  as no products add to cart button is clicked 
+then in initialstate cart key add a value as id:2 
+which on browser will show value in cart as cart(1)
+
+again make the initialstate cart key value as empty ie cart:[]
+
+useDispatch:
+when click on add to cart button then add product information in cart 
+for this ,get useDispatch code from redux toolkit website
+In Products file,remove addtocart function as it is not needed
+then in cart code, we made onclick function in that addtocart function
+so remove addtocart function from there and pass useDispatch function ie dispatch() 
+and in that dispatch function pass addtocart function from cartslices file 
+in that addtocart function pass product to get product information 
+so it will look like 
+( <button onClick={ () => dispatch(addtocart(product)) }            className="">Add To Cart</button> )
+In cartslices file, in addtocart function take state and action parameter 
+so state for updating value in that state and action will have the data in payload
+then give state.cart.push(action.payload) 
+to update the value in cart by pushing payload in action 
+Now in browser when we click on add to cart button it shows cart(1) 
+again clicking add to cart button it shows cart(2)
+so cart value is saved in cart
+
+
+
+Now some error occur as we go to another page like contactus page then it gives error 
+which was due to in product loop code for product title 
+we were giving product id in link which would give number but in link we need only string or object value so give product.title 
+also the span tag was not closed properly so remove it 
+now when we click on add to cart button the cart value becomes 2 ie cart(2) which when we  go to aboutus page where we can also see cart(2)
+
+
+
+Cart page:
+when clicked on cart(1) it should go to cart page showing all the cart values 
+In app folder, make a new folder as cart 
+in cart folder make page.js file 
+in page.js file, rfc for default code and from internet get the cart page ui and paste in this file 
+on website on clcking cart(0) we can see cart page 
+which has addtocart functionality, remove functionality, update quantity functionality and empty functionality
+
+In cartslice file, we have addtocart,removecart and emptycart functions 
+then make updatecartquantity function to update the product value 
+In cart page file, we have 3 items written in code which says how many items or products are in the cart  
+to get this product value we will use useDispatch and useSelector function 
+so get their import code from reduxtoolkit website
+also get useSelector code and give its name as getcartitems and pass 
+state.cart.cart 
+and pass this getcartitems variable at the place of 3 items 
+use 'use client'
+so on cart page it will show 1 items as we have 1 item in cart  
+
+In cart page, only have one product code and remove other product code 
+and make a loop for running this product code 
+The code uses a loop to go through each item in getcartitems and displays it on the page.
+so on when we click on add to cart button 3 times on cart page it shows 3 products 
+
+Remove function:
+When the "Remove" button is clicked, we need to know which item to remove by its index in the cart.
+in parameter give state and action 
+and Use the splice method to remove the item from the cart array at the index provided by action.payload
+Set the new cart array after removal
+In cart page, 
+Import useDispatch: From Redux.
+Create a Remove Handler: Define a function to handle the "Remove" button click.
+Call dispatch: Use dispatch to pass the index to the removecart action.
+Attach the Function: Bind this function to the "Remove" button so that clicking it triggers the remove action with the correct index.

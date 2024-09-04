@@ -1,0 +1,114 @@
+Adding Items to the Cart (addtocart function):
+Purpose: Save selected product data when "Add to Cart" is clicked.
+In cartslices files,
+in addtocart function you want to save data 
+when you click addtocart button it saves data in addtocart function which would be saved in localstorage
+the object data we get in addtocart we save all this object in addtocart function but we will only save particular data only like id,title,image,price,discountpercentage,qty 
+
+for this in addtocart function, console log action.payload which would in console when click addtocart button give that products all information from thier take data you want only 
+then make a constant cartitems and in that pass id,id,title,image,price,discountpercentage,qty key 
+all this data is found in action.payload 
+so in each key pass as for id: action.payload.id and qty is 1 as default value
+then push cartitems data 
+so our data is saved in addtocart function 
+
+To save data in localstorage:
+use localstorage.setItems() and pass the key in which we want save data ie cartitems 
+the data is saved in array format and to save in addtocart so convert data into string 
+so in localstorage.setItems(), pass JSON.stringify() and in this state.cart as data is in cart key in state 
+now when we click addtocart button the data gets saved in localstorage
+so in console in localstorage we can see a cartitems key with its value 
+
+( not teached completely
+also when again clicked on that same products addtocart button it shows another data saved in localstorage 
+so for same products data the quatity should be 1 
+for this we will use loop to check that cart already has the same data 
+if same id data is already in cart then update the quantity 
+for this in state.map() function use map() loop 
+)
+
+
+
+
+Keeping Cart Data After Page Refresh:
+when we have 2 id values in localstorage and refresh the page then cart(0) shows 0 item but in localstorage we have 2 values in cart
+to get this 2 values again cart() on website 
+for this make a getcartitems callbackfunction to get the values from localstorage  
+in that have a constant cart in which use localstorage.getItems('cartitems') as in localstorage in cartitems key value is stored 
+but cartitems data is in string so convert it into array so use JSON.parse() and pass all this localstorage.getItems() function in it
+const cart = JSON.parse(localStorage.getItem('cartitems'));
+now return cart variable 
+
+then make a constant getcartvalue and in that pass getcartitems()
+
+then if condition that if getcartvalues length is 0 then 
+give blank array to getcartval variable(different variable)
+or else ie getcartvalues length is not 0 then 
+give getcartvalue to getcartval variable 
+and in inititalstate cart key is given getcartval variable
+so we have getcartitems function which get the value in localStorage then if the values length is 0 then define value as blank else get the value as same value in localStorage
+so now we click addtocart button if gives cart(1) then we refresh page still it shows cart(1)
+
+
+Now if we have a product in cart page it shows one product 
+so if we again clicked on addtocart button showing cart(2) so 2 products in cart page
+for this in addtocart function, make a loop of value saved in cart 
+so make a data variable in that use state.cart.filter() loop that will filter data which matches condititon so it gives an array of data
+then if condition that data length is 0 ie no data is in cart so add data in cart 
+for adding data in cart make a constant cartitems in that give id,title,image,price,discountpercentage,qty data 
+else that data we are adding is already in cart then make a qty variable and in that pass console.log(data.qty)
+
+error comes so in cartslices file, in if condition give getcartvalue as null ie if (getcartvalue == null)   
+and in console clear the localStorage 
+
+so now refresh and clear the localStorage 
+then click addtocart button and in cart we see product 
+again click on addtocart button so in cart we can see two products
+then in cart page, at loop give {value.title} and at product value give {value.qty}
+but quantity is default 1 so change it in cartslices page,at else condition make qty variable in that pass data.qty and in this data.qty do  qty + 1 
+but it gives some error so lets see remove function now  
+
+then state.cart.push() pass it in the if() condition 
+
+
+Remove function:
+on clicking remove button the product should get removed 
+for this in cart page, at remove code give cursor-pointer property
+so on remove button we will get the mouse pointer 
+then on its onclick function give dispatch(removecart()) function to remove value.id of the product 
+then in cartslices page, at removecart function remove all the code inside 
+and do console log action.payload so when we click on remove button that cart id we will get in console 
+then again use the same filter loop code with only passing 
+v.id!=action.payload to get the all data in action.payload except the id 
+then save this all data in state.cart 
+now if we click on remove button it removes product 
+still it didnt get remove from localstorage as it still shows 
+cart(1) even if we remove that product 
+for removing product from the localStorage also  
+use localstorage.setItems() function with passing cartitems and state.cart in it 
+now if we click on remove button the product gets removed from localstorage also 
+
+
+emptycart:
+now in cart page,at the shopping code,make it empty cart and give onclick function with dispatch(emptycart()) function 
+and in cartslices page, in emptycart function add localStorage.clear() function with passing cartitems in it 
+and define state.cart as blank array 
+now if we click on emptycart button all products get removed and cart get empty 
+
+
+plus and minus:
+on clicking + button the product get added and 
+on clicking - button the product get removed 
+for this in cart page, at plus code ie svg code 
+give onclick callback function with dispatch(upadatecartqyt())
+and in this upadatecartqyt() pass value.id,qty+1
+and also import upadatecartqyt() 
+also at minus code give onclick callback function with dispatch(upadatecartqyt()) 
+and in this upadatecartqyt() pass value.id,qty-1
+then in cartslices page,at upadatecartqyt function pass state,action in its paramter 
+and also export upadatecartqyt() 
+and do console log action.payload 
+now when we click plus or minus button in console it gives id 
+but we get only one value as we need two values on clicking plus or minus button 
+
+

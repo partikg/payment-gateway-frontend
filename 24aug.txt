@@ -1,0 +1,155 @@
+quantity:
+if product already is in cart and again add the same product to cart then its quantity should get increased 
+for this in addtocart function,in else condition 
+lets runs a map loop to update the values in the data 
+and in that loop if condition as v.id is equal to payload.id which  means my product is alrady saved in cart and i again saved in cart then it does into the else conditon where i loop all the data in the cart so the data in cart ie v.id and the data i just added into cart has their id already in the cart 
+so id of the data in loop and the id of the data in cart are same then add one more value to the quantity 
+when my whole loop is finished running
+then set it into the localstorage 
+so we add product into the cart then again for already added product in cart we select it again so its quality becomes 2 
+
+
+plus or minus quantity:
+on clicking plus button the quantity of product should get increase and on clicking minus button the quantity of product should get decreased 
+for this get the same code from else condition of map and localstorage
+in updatecartqty function, and paste it over here 
+in cart page, at plus and minus code, change the function in dispatch as updatecartaddqty(value.id) and updatecartminusqty(value.id) with only passing id 
+also import updatecartaddqty and updatecartminusqty 
+then in cartsices page,change updatecartqty function and make two function as updatecartaddqty() and updatecartminusqty() 
+also export both of them 
+so in updatecartaddqty function, we have the code as adding the quantity and in if condition only pass action.payload 
+but in updatecartminusqty function, we have make changes as in if condition apply another if condition that v.qty is greater than 1 then minus the quantity
+now if we click on plus button the product gets added and on clicking minus button the product gets removed 
+
+
+
+
+checkout:
+on clicking checkout button we want to do payment 
+like we click on checkout button then a razorpay popup comes in which we fill information and payment is done 
+for razorpay we need to get its package 
+we have to work in both react and nodejs
+in nodejs we need to make two apis of placorder and confirm-order api 
+placeorder api means in razorpay an order is placed and which gives an order id which would be useful in react 
+confirm-order api means i have done the razorpayment or not 
+now bydefault we will have placeorder as 1 means pending status 
+then in react we will complete the payment process which on success and unsuccessful payment gives response 
+if my payment is success or even unsuccessful then we will call confirm-order api where we will send order id from placeorder api
+and also send status to confirm my order 
+
+now on razorpay website we will use test mode for no real payment 
+where we will get information about payment received or failed 
+
+we have to install packages in node and react 
+go to razorpay npm website for node and reactrazorpay website for react and install their packages  
+also having backend code(for node project) and frontend code(for react project) 
+
+
+backend:
+open nodejs project ie API project, go to server.js file in which we have called a order routes url 
+in order routes file, we make two url of place-order(before razorpay payment call place-order api which generate order id) and confirm-order(after completing razorpay payment to ensure payment confirmed and show in backend which payment are sucess or failed)
+in orders controller file,we have two functions placeorder and confirmorder 
+in order file,make schema for information you want to save like user_id,products_details,order_total,
+razorpay_order_id(before payment we get the order id which we save here),
+razorpay_payment_id(after payment we get payment id),
+status(1 to 7 values with each one having different meaning like 1 is for order placed,2 is for complete,3 is for failed),
+shipping_detail,
+also include timestamps as true which would automatically generate two keys in the database as created_at and updated_at 
+
+now from razorpay npm website,copy the basic usage code and paste in orders controller file 
+give key_id and key_secret 
+then in placeorder function, we have database of user_id,products_details,order_total,shipping_detail,status 
+after data is saved go to then condition,
+where we have amount(my orders total value),currency(INR),receipt(id) in options variable
+we get this code from razorpay npm websites order code 
+then instance.orders.create() function,
+where we pass these options(amount,currency,receipt) and it is async
+in this we use await as we update order in database so data variable will save in database where our order is generated then the razorpay_order_id will not go as razorpay_order_id will go when we will make order in payment gatemway 
+so we in instance creating order where instance is from the razorpay key_id and key_secret code 
+so in instance.order.create we create order where we pass the information from data variable(having user_id,products_details,order_total,shipping_detail,status)
+then await ordermodel.updateOne() so we use updateOne function for the data saved as we get razorpay_order_id from razorpay account this razorpay_order_id we will pass to the  razorpay_order_id key 
+we have passed async function(err,order) for error and success 
+so on order placed successfully we pass order 
+now in thunderclient,make a place-order api and in formencoded give input as user_id as 1,products_details as [] (ie null object as we get input from frontend),order_total as 100,shipping_detail as []
+and send where we get response from payment gateway in which we get id 
+so in mongodb we get the record with this id 
+also we have razorpay_payment_id so we call this placeorder api in frontend where we will get this razorpay_payment_id which we would save in this id 
+
+
+for confirmorder function,
+when we call api from frontend then we will send id and status
+now same code as in await ordermodel.updateOne() function code 
+just change id as razorpay_order_id and pass as request.body.order_id then we would update razorpay_payment_id and status 
+so our backend is done 
+
+
+
+
+for frontend:
+from react razorpay npm website, install the package for frontend react or nodejs project  
+
+In cart page, at checkout code call placeorder function 
+then we make a placeorder function and openpaymentpopup function 
+in that get the code from npm react-razorpay website, 
+so from basic example code copy the import code paste it in here 
+
+in cart page,in placeorder function, 
+set shippingdetails object like address
+then userid in which pass login users id
+then make a productdetails constant in which all cart items are passed in loop and in that make a array in which product id,qty,price,total amount is saved 
+then run api place-order api in which pass user_id,products_details,order_total,shipping_detail
+now this place-order api response will have placeorder function response from the  instance.orders.create() function response which were send in data to use it again 
+so in then function, when we get response from api then in if condition success.data.data.status 
+as to get data we need to write success.data as alwayls then the next data is get from the api and status is key which we get in the data(in thunderclient response)
+so if status key is found in the thunderclient response then open payment popup function in which we pass id (from thunderclient response) and the whole object(all response from thunderclient response)
+and esle shows in console unsuccessful to place order 
+
+after this openpaymentpopup function,
+after clicking on checkout button a payment gateway popup will open 
+in openpaymentpopup function pass order id and razorpayorder 
+then get the code from npm react-razorpay website basic example
+so the popup page will have options object having 
+key consist of razorpay id,
+amount in which pass razorpayorder.amount*100 as money is passed in paise so multiply it by 100,
+currency as INR,
+name for razorpay payment gateway,
+description,image for razorpay payment gateway logo,
+order_id as razorpay_order_id as we got in thunderclient response,
+then handler function as when your payment is successfull it goes to handler function 
+then prefill object having name,email,contact value 
+then theme for giving color in popup page 
+
+then rzp1 function in which if your payment is unsuccessful it goes in this function 
+and this code also we get in react-razorpay npm websites basic example code
+
+so when we click on checkout button it opens the razorpay payment gateway popup 
+
+when we click on card option then it asks card details in which we dont enter real card detail but use razorpay dummy card number websites card number 
+then give any expiry,name,cvv value 
+then click pay now before selecting success and failure 
+go to razorpay dashboard where we can see our payment as created 
+then click success now it shows authorized 
+
+now update this sucess or failed payment in database 
+for this in openpaymentpopup functions, in handler function,
+first console log response which give response in console after clicking success button and completing payment 
+in console we get razorpay_order_id and razorpay_payment_id
+then give confirm-order api having parameters as order_id,payment_id,status as 2(2 for complete)
+in order_id pass resonse.razorpay_order_id from which we get in  console 
+and in payment_id pass resonse.razorpay_payment_id from which we get in  console 
+
+copy this axios api code and paste in rzp1 function
+give status as 3(3 for failed)
+
+
+completing payment:
+so now in mongodb we have lastest record as with status 1 
+then click on checkout button give card number from dummy website 
+and click paynow and click success 
+so in mongodb so now it has status as 2 
+
+
+
+
+
+

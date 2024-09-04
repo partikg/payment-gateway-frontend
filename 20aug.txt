@@ -1,0 +1,127 @@
+contactus page:
+IN app folder, create a new folder ie contactus folder
+in contactus folder make a new file page.js 
+use rfc 
+take a h2 tag with some words to display 
+
+To get Header component in all pages:
+remove Header tag from all pages 
+in layout file, call Header component 
+so it will be seen all pages and no need to call Header component in every pages
+
+also you can only call Header and Footer component in layout page 
+as before {children} Header component is called  and after {children} Footer component is called
+
+
+
+
+logo redirect to Home page:
+on clicking logo it should redirect to Home page 
+
+for this in Header component,
+in logo code, remove anchor tag and use Link tag and give href="/" for Home page  
+
+
+Now in Header give aboutus and contactus Link:
+go to Feature and Marketplace code and remove their name with aboutus and contactus 
+and replace anchor tag with Link tag and href="aboutus" and href="contactus"
+
+we can use aboutus or /aboutus in Nextjs 
+but in reactjs you have to give /aboutus in href 
+as if we are in aboutus page and click on aboutus Link on Header then it would go on http://localhost:3000/aboutus/aboutus
+
+
+
+
+
+Products Listing page:
+
+when we call http://localhost:3000/products it will show product listing page 
+also if we call http://localhost:3000/products/men it should show same product listing page 
+also if we call http://localhost:3000/products/women it should show same product listing page 
+so for one page only [slug] ie men and women is changing 
+so it would be dynamic routing 
+so on same page three pages will also open 
+
+
+call dummyjson api
+to make the dropdown dynamic 
+In DummyJSON website, Get all products categories api copy its url 
+This api will be called when page is reloaded 
+
+In Header page ,
+remove the products and callsToAction array which contains the data which comes when we click on product and it shows this data in dropdown 
+we will make our custom dropdown 
+
+
+
+We have add About Us and Contact Us Link in desktop menu 
+now to change in mobile menu,
+go in mobileMenuOpen code, replace anchor tag with Link tag 
+and at the place of Feature give About Us with href as aboutus
+and at the place of Marketplace give Contact Us with href as contactus
+
+
+Now call api, 
+we use useEffect function  
+and in terminal install axios(npm i axios)
+then in useEffect function, use axios with get method 
+confirm that api has get method by running the api url on browser if it runs then it has get method 
+then in axios.get function pass the api url 
+and then and catch function with success and error is passed in their parameters 
+we will call api through success and success will give us data and  we will save that data in useState then we will run useState loop and fetch the data
+
+we will make useState with blank array as we get data in array format and categories, setcategories in array 
+so we will use setcategories variable to save the data in categories variable
+
+so in axios function, in then function,  when we get api response 
+use setcategories variable and pass in that success.data 
+as success will have all the api response data and data keyword is used to get the data 
+so we have called api and all its response data is saved in categories data 
+
+now run categories loop, 
+at product menu code, replace product with categories
+and in product menu code loop, remove the callsToAction loop 
+and replace products with categories and item.name to item.slug
+and item.href to item.slug 
+and replace anchor tag with Link tag
+and we dont have description key so remove item.description code 
+
+slug will be studied in Nodejs 
+
+also does this in mobile case,
+replace product with categories
+and remove the products and callsToAction array and give categories.map()
+and item.name to item.slug 
+
+also pass 'use client' in every page 
+
+so we will see on clicking Categories menu a dropdown will open  with all the data from the product api 
+
+
+
+now apply linking on that data in dropdown of Categories menu:
+like on clicking Beauty category then url should get made like http://localhost:3000/products/beauty 
+
+so in categories loop, in item.name code give href={`products/${item.slug}`} in Link
+so on moving mouse on Beauty category it will give Beauty category url 
+so on moving mouse on any category will give you their url 
+
+
+
+If we click on any category in dropdown menu of categories Link 
+then same page should get called 
+in url of any category we get the same keyword ie products 
+for this in app folder,make a folder products 
+in products folder, make new folder [slug] folder so that we get dynamic value 
+in [slug] folder, make new file page.jsx 
+give rfc and 'use client'
+give / in href={`/products/${item.slug}`} 
+because without / when we click on beauty category we get in url http://localhost:3000/products/products/beauty
+now when clicked on any category its page get open 
+
+you can give any name to [slug] folder as [categoryfolder] or [folder] 
+
+
+
+

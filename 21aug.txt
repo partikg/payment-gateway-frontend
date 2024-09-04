@@ -1,0 +1,164 @@
+to get [slug],
+how to get values after port no.,
+designing of 404 page,error page 
+
+
+Header Section:
+from tailwind css website get Header section code 
+In components, make new file Headersection.jsx  
+and paste the code in this file 
+In Home page, pass Headersection component 
+so we get the Headersection on Home page 
+
+
+
+error page:
+when we have error like we give url http://localhost:3000/aboutuss
+which gives error message displayed also error title at top  
+now we want to change the error message displayed and error title 
+for this go to nextjs official site,search for routing fundatmentals
+in that we have File Convention paragraph in which we have 
+not-found.js and error.js documents 
+
+not-found.js:
+to change the design of 404 error message on browser, the 404 error page being the default page of nextjs
+for this in app folder, make a new page not-found.js 
+get the code from nextjs website in routing fundatmentals 
+and paste in our not-found.js file 
+so the code will be shown on browser instead of default 404 error page 
+Also to get not-found.js page ui, go to tailwind css components and get the code from 404 pages ui 
+and paste in our not-found.js File
+Now to change the title of error page, 
+for this get the export metadata function and change the title 
+
+but if you make onclick function for a button then it wont work
+like if we give onclick function on a button and define the function but if we write 'use client' in that page it will give error 
+
+error.js:
+when we get error it shows on browser so instead of that error we want a file page to show
+for this make an error.js file  
+ 
+
+Loading.js:
+when we go from Aboutus page to Contactus page it takes some time to load in between 
+so in this time we want a loading indicator 
+for this make a new file as loading.js 
+and paste the code from nextjs website in routing fundatmentals in loading.js document 
+
+
+The website shows error when we are on http://localhost:3000/products/beauty page 
+as we cant go to Aboutus or Contactus page 
+for this in Header component, in href of aboutus and Contactus give href="/about-us" and href="/Contact-us"
+
+
+error.js:
+In not-found page, we have given scroll function 
+comment this part // var scroll = () => { }
+which will shown in error(scroll not defined) when we give wrong url 
+but as our website is live this nextjs error page should not be shown 
+instead another page should show error with something went wrong or please try again later error message
+also dont show 404 message as it means page not found but here page is available 
+
+for this make error.js file 
+In app folder, make error.js file 
+paste the code from nextjs website in routing fundatmentals in error.js document 
+now it shows something went wrong 
+
+uncomment the scroll function code in notfound page 
+so it shows 404 error page 
+
+
+
+
+Aboutus and Contactus title:
+to change the title in Aboutus page and Contactus page  
+paste const metadata code in Aboutus page and Contactus page 
+give their title and remove 'use client'  
+we will use 'use client' when needed in future
+so we get the title on Aboutus page and Contactus page 
+
+
+slug pages title change:
+to change the title of slug page  
+In products in [slug] page, 
+add the const metadata code and remove 'use client' 
+so we have slug title changed 
+
+
+slug value:
+In products ,
+to get the parameter or slug value like beauty, 
+In beauty page,use useParams function to get all the value in url 
+so we define a params constant and give useParams() 
+also remove export metadata and use 'use client'   
+then console this params constant
+In console it will give slug:beauty 
+then give params.slug in console log 
+so In console it will give beauty
+then pass it in return function as 
+slug:{params.slug}
+which will display as params : beauty 
+
+also to get the path value like for beauty is
+/products/beauty 
+In beauty page,use usePathname function to get all the path value in url 
+so we define a path constant and give usePathname() 
+and console log path 
+In console we get /products/beauty 
+
+
+Slug title change:
+to change the title of slug page with using 'use client'
+as we have used useParams and usePathname which needs 'use client' 
+but to change title of a page we use export metadata 
+and we cant use the 'use client' and export metadata in one file 
+for this we make a new file in components ie Products.jsx file
+In Products file component paste all the code from slug page 
+and remove export metadata code and give Products name in function
+then In slug page, have only export metadata and page function 
+and remove all import files,'use client',params and path constant
+and call Products component 
+so our slug title will get changed 
+
+
+
+
+Products listing page:
+from tailwindcss website, copy the category filters code 
+and paste in Products component file 
+In Products component file, our previously made code we have to delete it  
+and in this new tailwindcss code,
+give function name as Products
+also have params and path constant code and import useParams and usePathname
+then our Product page is seen on website 
+
+
+then in tailwindcss website, copy the product list code 
+which is the const products code and loop code 
+then products will be seen on Products page
+
+
+Now the number of product will be how many time of api is called   
+means the api gives product data in response so the number of time api gives response that much product will be there in Products component page 
+we will use dummyjson api 
+so go to dummyjson website and copy the api url of get products by a category 
+remove the const products 
+make a const of products and setproducts of usestate 
+then use useEffect function, in that use axios in that paste api url and also we need to pass parameter so give api url in backticks
+and after api url pass parameter of category which we get in website url ie {params.slug} which is like beauty category 
+and then function for success of api 
+in which use setproducts to give api response and pass success.data.products 
+as our dummyjson api has products key in which we have all data 
+and catch function for api error 
+after that in our product loop code, we will give key names according to dummyjson api 
+so changes will be for 
+    product.alt we give product.title ,
+    product.imageSrc give product.thumbnail,
+    product.href give product.title,
+    product.name give product.title,
+    product.color give product.brand 
+So in website we get 5 products with image,name,price,brand
+Also when we change category our products will also get changed 
+
+
+
